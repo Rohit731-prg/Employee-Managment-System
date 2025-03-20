@@ -1,14 +1,13 @@
 import Work from "../Models/Work.model.js";
 
 const insert = async (req, res) => {
-  const { title, work,date, assignTo, category, user } = req.body;
+  const { title, work,date, assignTo, category } = req.body;
   const data = {
     title,
     date,
     assignTo,
     category,
     work,
-    user,
   };
 
   try {
@@ -29,7 +28,7 @@ const getWorkById = async (req, res) => {
   const {id} = req.body;
 
   try {
-    const response = await Work.find({ user: id });
+    const response = await Work.find({ assignTo: id });
 
     return res.send({
       status: true,

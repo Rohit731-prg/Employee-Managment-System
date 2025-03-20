@@ -121,9 +121,28 @@ const getAllUser = async (req, res) => {
   }
 };
 
+const getUserById = async (req, res) => {
+  const { id } = req.body;
+
+  try {
+    const response = await User.find({ _id: id });
+
+    return res.send({
+      status: true,
+      data: response
+    });
+  } catch (error) {
+    return res.send({
+      status: false,
+      error: error,
+    });
+  }
+}
+
 export {
   insert,
   login,
   updateTask,
   getAllUser,
+  getUserById
 };

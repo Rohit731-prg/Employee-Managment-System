@@ -21,10 +21,6 @@ const WorkSchema = new mongoose.Schema({
         type: String,
         require: true,
     },
-    user: {
-        type: String,
-        require: true,
-    },
     status: {
         type: String,
         require: true,
