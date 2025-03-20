@@ -1,10 +1,7 @@
-import { useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { UserContext } from '../Store/UserContext';
 
 function EmployeeDetails() {
   const { id } = useParams(); // Destructure 'id' directly from useParams()
-  const { empDetails, setEmpDetails, taskList, setTaskList } = useContext(UserContext);
   const navigate = useNavigate();
 
   const logOut = () => {

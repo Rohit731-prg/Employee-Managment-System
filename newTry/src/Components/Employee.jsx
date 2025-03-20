@@ -1,68 +1,22 @@
-import { useContext } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { UserContext } from '../Store/UserContext';
+import React, { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 function Employee() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const { empDetails, setEmpDetails, taskList, setTaskList } = useContext(UserContext);
+  const fetchdata = async () => {
 
-  const compliteTask = (taskTitle) => {
-    setTaskList((prev) => ({
-      ...prev,
-      [`employee${id}`]: prev[`employee${id}`].map((task) =>
-        task.taskTitle === taskTitle
-          ? { ...task, setStatus: 'Completed' }
-          : task
-      ),
-    }));
-
-    setEmpDetails((prev) =>
-      prev.map((emp) =>
-        String(emp.id) === id
-          ? {
-              ...emp,
-              acttask: emp.acttask - 1,
-              completedTask: emp.completedTask + 1,
-            }
-          : emp
-      )
-    );
   };
 
-  const failedTask = (taskTitle) => {
-    setTaskList((prev) => ({
-      ...prev,
-      [`employee${id}`]: prev[`employee${id}`].map((task) =>
-        task.taskTitle === taskTitle
-          ? { ...task, setStatus: 'Failed' }
-          : task
-      ),
-    }));
+  useEffect(() => {
 
-    setEmpDetails((prev) =>
-      prev.map((emp) =>
-        String(emp.id) === id
-          ? {
-              ...emp,
-              newTask: emp.newTask - 1,
-              failed: emp.failed + 1,
-            }
-          : emp
-      )
-    );
-  };
+  }, []);
+
+  const compliteTask = (taskTitle) => {};
 
   const logOut = () => {
-    setEmpDetails((prev) =>
-      prev.map((emp) =>
-        String(emp.id) === id
-          ? { ...emp, newTask: 0 }
-          : emp
-      )
-    );
-    navigate('/');
+    navigate("/");
   };
 
   return (
@@ -70,7 +24,7 @@ function Employee() {
       <p className="text-white text-4xl font-semibold">Hello 👋</p>
       <div className="w-full h-auto flex flex-row justify-between mt-5 font-bold">
         <p className="text-white text-4xl ">
-          {empDetails.map((name) => name.id === Number(id) && name.empName)}
+          {/* {empDetails.map((name) => name.id === Number(id) && name.empName)} */}
         </p>
         <button
           onClick={logOut}
@@ -79,7 +33,7 @@ function Employee() {
           Log Out
         </button>
       </div>
-      <div className="w-full h-auto flex flex-row justify-between items-center mt-20 gap-5">
+      {/* <div className="w-full h-auto flex flex-row justify-between items-center mt-20 gap-5">
         {[
           { label: 'New Task', value: empDetails[id - 1].newTask, color: 'bg-blue-400' },
           { label: 'Active Task', value: empDetails[id - 1].acttask, color: 'bg-green-400' },
@@ -91,17 +45,26 @@ function Employee() {
             <p className="text-white text-2xl font-medium">{stat.label}</p>
           </div>
         ))}
-      </div>
+      </div> */}
       <div className="w-full h-auto mt-40 flex flex-row overflow-x-auto gap-10 wrapper no-scrollbar">
         {taskList[`employee${id}`]?.map((task, index) => (
-          <div key={index} className="w-[450px] h-[400px] p-10 rounded-lg bg-pink-400 flex flex-col">
+          <div
+            key={index}
+            className="w-[450px] h-[400px] p-10 rounded-lg bg-pink-400 flex flex-col"
+          >
             <div className="w-full h-auto flex flex-row justify-between mb-5">
-              <p className="text-white font-medium p-2 bg-red-600 rounded-md">{task.category}</p>
+              <p className="text-white font-medium p-2 bg-red-600 rounded-md">
+                {task.category}
+              </p>
               <p className="text-white font-normal">{task.taskDate}</p>
             </div>
-            <p className="text-white font-semibold text-3xl">{task.taskTitle}</p>
-            <p className="text-white font-medium text-2xl mt-5">{task.taskDesc}</p>
-            <div className="w-full h-auto flex flex-row justify-between mt-10">
+            <p className="text-white font-semibold text-3xl">
+              {task.taskTitle}
+            </p>
+            <p className="text-white font-medium text-2xl mt-5">
+              {task.taskDesc}
+            </p>
+            {/* <div className="w-full h-auto flex flex-row justify-between mt-10">
               {task.setStatus === 'Pending' ? (
                 <>
                   <button
@@ -122,7 +85,7 @@ function Employee() {
               ) : (
                 <p className="text-white font-medium">Failed</p>
               )}
-            </div>
+            </div> */}
           </div>
         ))}
       </div>

@@ -1,8 +1,16 @@
 import express from "express";
-import { insert } from '../Controllers/User.controller.js';
+import {
+  insert,
+  login,
+  updateTask,
+  getAllUser,
+} from "../Controllers/User.controller.js";
 
 const router = express.Router();
 
-router.post('/insert', insert);
+router.post("/insert", insert);
+router.post("/login", login);
+router.post("/updateNewTask", updateTask);
+router.get("/getAllUser", getAllUser);
 
-export default router
+export default router;

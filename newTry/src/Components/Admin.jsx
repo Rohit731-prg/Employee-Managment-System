@@ -1,46 +1,45 @@
-import { useContext, useState } from 'react'
+import React, { useEffect } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { UserContext } from '../Store/UserContext';
+import axios from 'axios'
 
 function Admin() {
     const navigate = useNavigate();
-    const [empID, setEmpID] = useState(0);
     const [taskTitle, setTaskTitle] = useState('');
     const [taskDesc, setTaskDesc] = useState('');
     const [taskDate, setTaskDate] = useState('');
     const [category, setCategory] = useState('');
-    const {empDetails, setEmpDetails, taskList, setTaskList} = useContext(UserContext);
+    const [assignTo, setAssignTo] = useState('');
+    const [user, setUser] = useState('');
+
+    const [allTask, setAllTask] = useState([]);
+    const [allUser, setAllUser] = useState([]);
 
     const createTask = () => {
-        if (empID === 0) {
-            alert('Please Enter Employee ID');
-        } else {
-            setEmpDetails((prev) =>
-                prev.map((emp) =>
-                    emp.id === empID
-                        ? { ...emp, newTask: emp.newTask + 1, acttask: emp.acttask + 1 }
-                        : emp
-                )
-            );
-            setTaskList((prev) => ({
-                ...prev,
-                [`employee${empID}`]: [
-                    ...prev[`employee${empID}`],
-                    {
-                        setStatus: 'Pending',
-                        taskTitle: taskTitle,
-                        taskDesc: taskDesc,
-                        taskDate: taskDate,
-                        category: category,
-                    },
-                ],
-            }))
+        // const newTask = {
+        //     title: taskTitle,
+        //     date: taskDate,
+        //     assignTo: assignTo,
+        //     category: category,
+        //     work: taskDesc,
+        //     user: user
+        // }
+    };
+
+    const fetAllUser = async () => {
+        try {
+            const res = await axios.get('');
+            const updatedAllUser = res.data.data;
+            setAllUser(updatedAllUser);
+
+        } catch (error) {
+            console.log("Error from fetAllUser: ", error);
         }
-        setCategory('');
-        setTaskTitle('');
-        setTaskDesc('');
-        setTaskDate('');
-    };    
+    }
+
+    useEffect(() => {
+        fetAllUser();
+    })
     
   return (
     <div className='w-full h-full bg-black px-20 py-10'>
@@ -70,9 +69,9 @@ function Admin() {
                 onChange={(e) => setEmpID(Number(e.target.value))}
                 className='w-full text-white h-11 rounded-lg px-5 border-2 border-white bg-transparent outline-none'>
                     <option className='bg-black' value="">Select Employee Name</option>
-                    {empDetails.map((emp) => (
+                    {/* {empDetails.map((emp) => (
                         <option className='bg-black' key={emp.id} value={emp.id}>{emp.empName}</option>
-                    ))}
+                    ))} */}
                 </select>
                 <p className='text-white text-2xl font-medium my-2'>Category</p>
                 <input type="text" 
@@ -105,8 +104,8 @@ function Admin() {
                 <p className='w-1/6 text-2xl text-center font-medium text-white'>Failed</p>
                 <p className='w-1/6 text-2xl text-center font-medium text-white'>Action</p>
             </div>
-            {empDetails.map((emp, idx) => (
-                <div 
+            {/* {empDetails.map((emp, idx) => (
+                <div
                 key={idx}
                 className='w-full h-auto flex flex-row justify-between py-2 px-2'>
                     <p className='w-1/6 text-start text-2xl font-medium text-white'>{emp.empName}</p>
@@ -118,7 +117,7 @@ function Admin() {
                     onClick={() => navigate(`/employeeDetails/${emp.id}`)}
                     className='w-1/6 text-center text-xl font-medium text-white border-2 border-white py-2 rounded-lg'>Details</button>
                 </div>
-            ))}
+            ))} */}
         </div>
     </div>
   )

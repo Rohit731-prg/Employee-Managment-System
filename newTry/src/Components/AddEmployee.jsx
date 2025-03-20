@@ -1,44 +1,31 @@
-import React, { useContext, useState } from 'react'
+import axios from 'axios';
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../Store/UserContext';
 
 function AddEmployee() {
     const navigate = useNavigate();
-    const [id, setID] = useState(4);
     const [empName, setEmpName] = useState('');
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
-    const { empDetails, setEmpDetails, taskList, setTaskList } = useContext(UserContext);
 
     const createID = {
-        id: id,
         empName: empName,
         username: userName,
-        password: password,
-        newTask: 0,
-        acttask: 0,
-        completedTask: 0,
-        failed: 0
+        password: password
     };
 
-    const createNewID = () => {
-        if (empName !== '' && userName !== '' && password !== '' && confirmPassword !== '') {
-            if (password === confirmPassword) {
-                setEmpDetails((prev) => [...prev, createID]);
-                setTaskList((prev) => ({ ...prev, [`employee${id}`]: [] }));
-                setID((prev) => prev + 1); // Increment ID properly
-                alert('Employee Added Successfully');
-                setEmpName('');
-                setUserName('');
-                setPassword('');
-                setConfirmPassword('');
+    const createNewID = async () => {
+        try {
+            const res = await axios.post('http://localhost:2525/user/insert', createID);
+            if (res.data.success == true && password == confirmPassword) {
+                alert('User Created Successfully');
             } else {
-                alert('Passwords do not match');
+                alert('User Not Created');
             }
-        } else {
-            alert('Please fill all the fields');
+        } catch (error) {
+            console.log("error: ", error);
         }
     };
 
